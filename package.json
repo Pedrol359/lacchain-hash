@@ -1,0 +1,21 @@
+{
+  "name": "lacchain-hash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "hardhat": "^3.0.12"
+  },
+  "dependencies": {
+    "@lacchain/gas-model-provider": "^1.2.1",
+    "dotenv": "^17.2.3",
+    "ethers": "^6.15.0"
+  }
+}
