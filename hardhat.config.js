@@ -3,7 +3,7 @@
   networks: {
     lacchain_local: {
       type: "http",                 // <-- requerido por Hardhat v3
-      url: "http://127.0.0.1:4545"  // reemplaza por tu RPC si es otra
+      url: "http://98.89.1.157:4545"  // reemplaza por tu RPC si es otra
     }
   },
   paths: {
