@@ -1,9 +1,9 @@
 // scripts/deployStorageHash.js
-import fs from "fs";
-import path from "path";
-import dotenv from "dotenv";
-import { ethers } from "ethers";
-import { LacchainProvider, LacchainSigner } from "@lacchain/gas-model-provider";
+const fs = require("fs");
+const path = require("path");
+const dotenv = require("dotenv");
+const ethers = require("ethers");
+const { LacchainProvider, LacchainSigner } = require("@lacchain/gas-model-provider");
 
 dotenv.config();
 
@@ -13,12 +13,8 @@ const NODE_ADDRESS = process.env.NODE_ADDRESS || "";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 const EXPIRATION_MS = parseInt(process.env.EXPIRATION_MS || "300000", 10);
 
-if (!NODE_ADDRESS) {
-  console.error("ERROR: NODE_ADDRESS no definido en .env");
-  process.exit(1);
-}
-if (!PRIVATE_KEY) {
-  console.error("ERROR: PRIVATE_KEY no definido en .env");
+if (!NODE_ADDRESS || !PRIVATE_KEY) {
+  console.error("ERROR: NODE_ADDRESS o PRIVATE_KEY no definidos en .env");
   process.exit(1);
 }
 
@@ -50,6 +46,11 @@ async function main() {
   console.log("Contract deployed at:", receipt.contractAddress);
   console.log("Receipt:", receipt.transactionHash);
   console.log("Done.");
+
+  // opcional: guardar dirección del contrato en .env.local para usar en storeHash.js
+  const envPath = path.join(process.cwd(), ".env.local");
+  fs.appendFileSync(envPath, `\nCONTRACT_ADDRESS=${receipt.contractAddress}\n`);
+  console.log(`Contract address saved to ${envPath}`);
 }
 
 main().catch((err) => {

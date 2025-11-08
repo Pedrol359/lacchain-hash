@@ -1,13 +1,10 @@
 {
-  "_format": "hh3-artifact-1",
+  "_format": "hh-sol-artifact-1",
   "contractName": "BaseRelayRecipient",
   "sourceName": "contracts/BaseRelayRecipient.sol",
   "abi": [],
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "linkReferences": {},
-  "deployedLinkReferences": {},
-  "immutableReferences": {},
-  "inputSourceName": "project/contracts/BaseRelayRecipient.sol",
-  "buildInfoId": "solc-0_8_24-a425868d7c79aee58a7f36e0d98164b683129134"
+  "deployedLinkReferences": {}
 }
