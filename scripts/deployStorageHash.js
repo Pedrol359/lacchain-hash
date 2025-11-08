@@ -2,12 +2,12 @@
 const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
-const ethers = require("ethers");
+const { ethers } = require("ethers");
 const { LacchainProvider, LacchainSigner } = require("@lacchain/gas-model-provider");
 
 dotenv.config();
 
-// carga variables desde .env
+// Variables desde .env
 const RPC = process.env.RPC || "http://127.0.0.1:4545";
 const NODE_ADDRESS = process.env.NODE_ADDRESS || "";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
@@ -23,12 +23,12 @@ async function main() {
   console.log("NODE_ADDRESS:", NODE_ADDRESS);
   console.log("Usando LacchainProvider y LacchainSigner...");
 
-  // provider y signer según la doc
+  // provider y signer según doc
   const provider = new LacchainProvider(RPC);
   const expirationDate = Date.now() + EXPIRATION_MS;
   const signer = new LacchainSigner(PRIVATE_KEY, provider, NODE_ADDRESS, expirationDate);
 
-  // carga artifact (compilado por hardhat)
+  // Carga artifact compilado por Hardhat
   const artifactPath = path.join(process.cwd(), "artifacts", "contracts", "StorageHash.sol", "StorageHash.json");
   if (!fs.existsSync(artifactPath)) {
     console.error("Artifact not found:", artifactPath);
@@ -39,18 +39,20 @@ async function main() {
   const factory = new ethers.ContractFactory(artifact.abi, artifact.bytecode, signer);
 
   console.log("Deploying StorageHash contract...");
+
+  // Para ethers v6, deploy y espera confirmación
   const contract = await factory.deploy();
-  console.log("TxHash (deploy sent):", contract.deployTransaction.hash);
+  await contract.waitForDeployment(); // Espera a que el contrato esté en la blockchain
 
-  const receipt = await contract.deployTransaction.wait();
-  console.log("Contract deployed at:", receipt.contractAddress);
-  console.log("Receipt:", receipt.transactionHash);
-  console.log("Done.");
+  const contractAddress = await contract.getAddress();
+  console.log("Contract deployed at:", contractAddress);
 
-  // opcional: guardar dirección del contrato en .env.local para usar en storeHash.js
+  // Guarda la dirección en .env.local para usar en storeHash.js
   const envPath = path.join(process.cwd(), ".env.local");
-  fs.appendFileSync(envPath, `\nCONTRACT_ADDRESS=${receipt.contractAddress}\n`);
+  fs.appendFileSync(envPath, `\nCONTRACT_ADDRESS=${contractAddress}\n`);
   console.log(`Contract address saved to ${envPath}`);
+
+  console.log("Done.");
 }
 
 main().catch((err) => {
