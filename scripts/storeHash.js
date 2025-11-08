@@ -1,9 +1,9 @@
 // scripts/storeHash.js
-import fs from "fs";
-import path from "path";
-import dotenv from "dotenv";
-import { ethers } from "ethers";
-import { LacchainProvider, LacchainSigner } from "@lacchain/gas-model-provider";
+const fs = require("fs");
+const path = require("path");
+const dotenv = require("dotenv");
+const ethers = require("ethers");
+const { LacchainProvider, LacchainSigner } = require("@lacchain/gas-model-provider");
 
 dotenv.config();
 
@@ -11,7 +11,7 @@ const RPC = process.env.RPC || "http://127.0.0.1:4545";
 const NODE_ADDRESS = process.env.NODE_ADDRESS || "";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 const EXPIRATION_MS = parseInt(process.env.EXPIRATION_MS || "300000", 10);
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || ""; // opcional: puedes fijarla aquí o pasar por arg
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || "";
 const INPUT = process.env.INPUT || process.argv[2] || "mi-hash-de-prueba";
 
 if (!NODE_ADDRESS) {
@@ -24,8 +24,6 @@ if (!PRIVATE_KEY) {
 }
 if (!CONTRACT_ADDRESS) {
   console.error("ERROR: CONTRACT_ADDRESS no definido en .env ni pasado como arg");
-  console.error("Puedes setear CONTRACT_ADDRESS en .env o ejecutar: node scripts/storeHash.js <inputString>");
-  // no hacemos exit para permitir que pase por arg; pero aquí preferimos salir
   process.exit(1);
 }
 
