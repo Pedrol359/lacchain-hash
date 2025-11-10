@@ -53,8 +53,12 @@ async function main() {
   const receipt = await tx.wait();
   console.log("Tx mined. Receipt:", receipt.transactionHash);
 
-  // verificación de lectura (isStored)
-  const stored = await contract.isStored(hashBytes);
+  let stored = false;
+  try {
+    stored = await contract.isStored(hashBytes); // función view
+  } catch (e) {
+    console.warn("No se pudo leer isStored:", e.message);
+  }
   console.log("isStored:", stored);
 }
 
@@ -62,3 +66,5 @@ main().catch((err) => {
   console.error("Error:", err);
   process.exit(1);
 });
+
+

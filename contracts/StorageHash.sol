@@ -32,3 +32,4 @@ contract StorageHash is BaseRelayRecipient {
         return exists[_h];
     }
 }
+
